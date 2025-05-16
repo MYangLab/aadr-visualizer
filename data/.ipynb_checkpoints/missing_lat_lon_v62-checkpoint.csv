@@ -1,0 +1,12 @@
+locality,GISLat,GISLon,lat_lon_notes
+SouthCoast,-13.476219,-76.016683,Lat/lon and coverage provided in supplementary information of publication (Dataset_S01)
+Zaman Baba,39.617,63.735,Lat/lon and coverage provided in supplementary information of publication (Table S1-S5)
+Myrzhyk,50.067,77.051,"Lat/lon approximated to the village of Myrzhyk, Kazahkstan"
+"Solyanka Vodokhranilische, West Kazakhstan",50.29194444,51.38694444,Lat/lon and coverage provided in supplementary information of publication (Table S1-S5)
+"East Kazakhstan Region, Katonkaragai District, Mayemer Village, left bank of Narym River, Mayemer II, mound 1",49.179,84.969,"Lat/lon approximated to Mayemer (ÐœÐ°Ð¹ÐµÐ¼ÐµÑ€), on the left bank of the Narym River"
+"Kehf el Baroud (Ziaïda municipality, 10 km northeast of Ben Slimane)",33.656708,-7.007062,Lat/lon information taken from this webpage: https://archiqoo.com/locations/kehf_elbaroud.php
+Xinjiang,42.89,83.17,Lat/lon averaged from all other Xinjiang groups from the same publication
+"Cueva de los Esqueletos 1 (Camagüey, Sierra de Cubitas)",21.685,-77.894,Lat/lon approximated by georeferencing a map of the site to Cuba in ArcGIS Pro; used fig.1 in publication.
+Les-Cottes,46.791,0.99553,Lat/lon approximated by georeferencing a map of the site to France in ArcGIS Pro; used fig. 1 of https://www.sciencedirect.com/science/article/pii/S0305440311003463
+"Tolna county, Proletár trail, Dunaszentgyörgy",46.533333,18.833333,Lat/lon provided in supplemental information of publication (table S1)
+Bungule (Taita-Taveta),-3.846817,38.67532,Lat/lon provided in supplemental information of publication (table S1)

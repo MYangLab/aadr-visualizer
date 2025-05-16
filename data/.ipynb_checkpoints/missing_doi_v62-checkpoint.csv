@@ -1,0 +1,27 @@
+publication_code,doi_link,doi_notes
+LazaridisNature2016,https://doi.org/10.1038/nature19310,DOI was missing - manually added
+SjogrenPLoSOne2020,https://doi.org/10.1371/journal.pone.0241278,DOI was missing - manually added (publication code mismatch)
+NikitinPLoSOne2023,https://doi.org/10.1371/journal.pone.0285449,DOI was missing - manually added (publication code mismatch)
+GerberbioRxiv2024,https://doi.org/10.1101/2024.05.29.596386,DOI was missing - manually added (publication code mismatch)
+FernandesSirakNature2020,https://doi.org/10.1038/s41586-020-03053-2,DOI was missing - manually added
+LazaridisAlpaslanRoodenbergScience2022,https://doi.org/10.1126/science.abm4247,DOI was missing - manually added
+ChangmaiScientificReports2022,https://doi.org/10.1038/s41598-022-26799-3,DOI was missing - manually added
+GelabertBioRxiv2023,https://doi.org/10.1101/2023.07.07.548126,DOI was missing - manually added (publication code mismatch)
+FuNature2014,https://doi.org/10.1038/nature13810,DOI was missing - manually added
+Pruefer2017,https://doi.org/10.1126/science.aao1887,DOI was missing - manually added (publication code mismatch)
+Posted publicly online in 2023,https://doi.org/10.1016/j.isci.2024.110963,"DOI was missing - publication was not listed, but currently linked publication seems correct"
+SiskaScienceAdvances2017 and SikoraNature2019 merged,https://doi.org/10.1126/science.aao1807,DOI was missing - manually added (https://doi.org/10.1038/s41586-019-1279-z)
+YuCell2020,https://doi.org/10.1016/j.cell.2020.04.037,DOI was missing - manually added
+LipsonNature2020,https://doi.org/10.1038/s41586-020-1929-1,DOI was missing - manually added
+AgranatTamirWaldmanCell2020,https://doi.org/10.1016/j.cell.2020.04.024,DOI was missing - manually added  (publication codes mismatch)
+SanchezQuintoPNAS2019,https://doi.org/10.1073/pnas.1818037116,DOI was missing - manually added
+"HarneyBioRxiv2022,HarneyScience2023",https://doi.org/10.1101/2022.06.12.495320,Multiple DOIs - only the first publication is hyperlinked
+SaagCurrentBiology2017 merge with AllentoftNature2015,https://doi.org/10.1016/j.cub.2017.06.022,Multiple DOIs - only the first publication is hyperlinked
+FeldmanNatureCommunications2019,https://doi.org/10.1038/s41467-019-09209-7,Error in DOI - manually edited
+FlegontovNature2019 merged with HarneyCheronetGenomeResearch2021,https://doi.org/10.1038/s41586-019-1251-y,Multiple DOIs - only the first publication is hyperlinked
+StolarekGenomeBio2023,https://doi.org/10.1186/s13059-023-03013-9,Error in DOI - manually edited
+AntonioeLife2024 and AntonioGaoMootsScience2019,https://doi.org/10.7554/eLife.79714,Multiple DOIs - only the first publication is hyperlinked
+Unpublished,https://doi.org/10.1101/2022.06.12.495320,Multiple DOIs - only the first publication is hyperlinked
+VillalbaMoucoCurrentBiology2019,https://doi.org/10.1038/nature17993,Multiple DOIs - only the first publication is hyperlinked
+MartinianoDurbinCellGenomics2024,https://doi.org/10.1016/j.xgen.2024.100507,Error in DOI - manually edited
+PosthYuNature2023,https://doi.org/10.17617/3.Y1KJMF,Error in DOI - manually edited
