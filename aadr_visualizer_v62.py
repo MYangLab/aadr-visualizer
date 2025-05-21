@@ -29,19 +29,27 @@ class AadrCheck:
         # check empty lat/lon
         empty_lat_lon = self.aadr_df[(self.aadr_df["GISLat"].isnull()) | (self.aadr_df["GISLon"].isnull())]
         return empty_lat_lon
-    
-    def merge_regions(self, region_filepath):
+
+    def merge_regions(self, region_filepath, missing_region_filepath):
         region_df = pd.read_csv(region_filepath, delimiter=",", header=0, dtype=str)    
         region_df = region_df[['name', 'region', 'sub-region']]
-        
-        merged_df = self.aadr_df.merge(region_df, left_on="political_entity", right_on='name', how='left')
-        merged_df.drop(columns=['name'], inplace=True)
+
+        missing_region_df = pd.read_csv(missing_region_filepath, delimiter=",", header=0, dtype=str)
+        merged_region_df = region_df.merge(missing_region_df, on="name", how='outer')
+        merged_region_df['edited_name'] = merged_region_df['edited_name'].fillna(merged_region_df['name'])
+        merged_region_df['region'] = merged_region_df['region'].fillna(merged_region_df['missing_region'])
+        merged_region_df['sub-region'] = merged_region_df['sub-region'].fillna(merged_region_df['missing_subregion'])
+        merged_region_df.drop(columns=['name', 'missing_region', 'missing_subregion'], inplace=True)
+
+        merged_df = self.aadr_df.merge(merged_region_df, left_on="political_entity", right_on="edited_name", how='left')
+        merged_df.drop(columns=['edited_name'], inplace=True)
 
         # update aadr_df
         self.aadr_df = merged_df
 
         # check empty political entities
-        empty_regions = self.aadr_df[self.aadr_df["political_entity"].isnull()]
+        empty_regions = self.aadr_df[self.aadr_df["region"].isnull() | self.aadr_df["sub-region"].isnull()]
+
         return empty_regions
 
     def merge_doi(self, missing_doi_filepath):        
@@ -116,15 +124,16 @@ class AadrCheck:
         manual_df = pd.read_csv(manual_edit_filepath, delimiter=",", header=0, dtype=str)
         merged_df = self.aadr_df.merge(manual_df, on='genID', how='left')
         self.aadr_df = merged_df
-        self.aadr_df["notes"] = self.aadr_df[["doi_notes", "lat_lon_notes", "manual_notes"]].agg(lambda x: ', '.join(x.dropna()), axis=1)
-        self.aadr_df.drop(columns=["doi_notes", "lat_lon_notes", "manual_notes"], inplace=True)
+        self.aadr_df["notes"] = self.aadr_df[["doi_notes", "lat_lon_notes", "region_notes", "manual_notes"]].agg(lambda x: ', '.join(x.dropna()), axis=1)
+        self.aadr_df.drop(columns=["doi_notes", "lat_lon_notes", "region_notes", "manual_notes"], inplace=True)
 
     def save_aadr_df(self, aadr_csv_filename):
         self.aadr_df.to_csv(aadr_csv_filename, index=False)
 
 def main():
     aadr_filepath = "data/v62.0_1240k_public.anno"
-    region_filepath = "data/countries.csv"
+    region_filepath = "data/iso_country_v10.0.csv"
+    missing_region_filepath = "data/missing_region_v62.csv"
     missing_lat_lon_filepath = "data/missing_lat_lon_v62.csv"
     missing_doi_filepath = "data/missing_doi_v62.csv"
     manual_edit_filepath = "data/manual_edit_notes_v62.csv"
@@ -142,9 +151,9 @@ def main():
         # print(lat_lon[['genID', 'masterID','locality']])
 
     # merge regions
-    regions = aadr.merge_regions(region_filepath)
+    regions = aadr.merge_regions(region_filepath, missing_region_filepath)
     if not regions.empty:
-        print("region:", regions['political_entity'].unique().tolist())
+        print("political entity(missing region/sub-region):", regions['political_entity'].unique().tolist())
         # print(regions[['genID', 'masterID', 'political_entity']])
 
     # edit publications
