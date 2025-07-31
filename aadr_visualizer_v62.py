@@ -89,11 +89,11 @@ class AadrCheck:
     
     def read_aadr_file(self):
         columns_mapping = {
-            0: "genID", 1: "masterID", 5: "publication", 6: "doi", 9: "ybp", 
-            11: "yrange", 13: "groupID", 14: "locality", 15: "political_entity",
-            16: "lat", 17: "lon", 22: "snpauto", 24: "molsex", 27: "yhaplo_term", 
-            28: "yhaplo_isogg", 30: "mtDNA_covg", 31: "mtDNA_haplo", 33: "dmgrate",
-            37: "libtype", 40: "asm"
+            0: "genID", 1: "masterID", 5: "publication", 6: "doi", 7:"repository",
+            9: "ybp", 11: "yrange", 13: "groupID", 14: "locality", 15: "political_entity",
+            16: "lat", 17: "lon", 19: "sequence_type", 22: "snpauto", 24: "molsex",
+            27: "yhaplo_term", 28: "yhaplo_isogg", 30: "mtDNA_covg", 31: "mtDNA_haplo",
+            33: "dmgrate", 37: "libtype", 40: "asm"
         }
         
         aadr_df = pd.read_csv(
@@ -102,10 +102,10 @@ class AadrCheck:
         )
         
         # reorder
-        aadr_df = aadr_df[['genID', 'masterID', 'groupID', 'publication', 'doi',
-                           'ybp', 'yrange', 'locality', 'political_entity', 'lat', 'lon', 
-                           'snpauto', 'molsex', 'yhaplo_term', 'yhaplo_isogg',
-                           'mtDNA_covg', 'mtDNA_haplo', 'dmgrate', 'libtype', 'asm']]
+        aadr_df = aadr_df[['genID', 'masterID', 'groupID', 'publication', 'doi', 'ybp', 'yrange',
+                           'locality', 'political_entity', 'lat', 'lon', 'snpauto', 'molsex',
+                           'yhaplo_term', 'yhaplo_isogg', 'mtDNA_covg', 'mtDNA_haplo',
+                           'dmgrate', 'libtype', 'asm', 'repository', 'sequence_type']]
         
         return aadr_df
     
@@ -126,7 +126,22 @@ class AadrCheck:
         self.aadr_df = merged_df
         self.aadr_df["notes"] = self.aadr_df[["doi_notes", "lat_lon_notes", "region_notes", "manual_notes"]].agg(lambda x: ', '.join(x.dropna()), axis=1)
         self.aadr_df.drop(columns=["doi_notes", "lat_lon_notes", "region_notes", "manual_notes"], inplace=True)
-
+  
+    def clean_sequence_type(self):
+        mask = self.aadr_df['sequence_type'].isin(['AG, BY, AA'])
+        self.aadr_df.loc[mask, 'sequence_type'] = 'AG.BY.AA'
+        mask = self.aadr_df['sequence_type'].isin(['AG,SG', 'SG, AG'])
+        self.aadr_df.loc[mask, 'sequence_type'] = 'AG.SG'
+        return self.aadr_df['sequence_type'].unique().tolist()
+    
+    def exc_regions(self, region_exception_filename, region, subregion, region_note):
+        exc_region_df = pd.read_csv(region_exception_filename, delimiter=",", header=0, dtype=str)
+        exc_region_list = exc_region_df["genID"].unique().tolist()
+        mask = self.aadr_df['genID'].isin(exc_region_list)
+        self.aadr_df.loc[mask, 'region'] = region
+        self.aadr_df.loc[mask, 'sub-region'] = subregion
+        self.aadr_df.loc[mask, 'region_notes'] = region_note
+        
     def save_aadr_df(self, aadr_csv_filename):
         self.aadr_df.to_csv(aadr_csv_filename, index=False)
 
@@ -143,19 +158,31 @@ def main():
 
     # remove refs/present-day popns
     print(aadr.process_aadr_file())
+ 
+    # edit sequence type
+    seq_type = aadr.clean_sequence_type()
+    if len(seq_type) != 12:
+        print(seq_type)
     
     # merge lat/lon
     lat_lon = aadr.merge_lat_lon(missing_lat_lon_filepath)
     if not lat_lon.empty: # 1 missing lat/lon
         print("locality(missing lat/lon):", lat_lon['locality'].unique().tolist())
-        # print(lat_lon[['genID', 'masterID','locality']])
+        # print(lat_lon[['genID', 'masterID','locality', 'lat', 'lon']])
 
-    # merge regions
+    # merge regions    
     regions = aadr.merge_regions(region_filepath, missing_region_filepath)
+    region_list1 = "data/Americas_LAC_list.csv"
+    region_list2 = "data/Oceania_Micronesia_list.csv"
+    region_list3 = "data/Asia_Siberia_list.csv"
+    region_note = "Assigned region/subregion manually because the political entity is a transcontinental state."
+    aadr.exc_regions(region_list1, "Americas", "Latin America and the Caribbean", region_note)
+    aadr.exc_regions(region_list2, "Oceania", "Micronesia", region_note)
+    aadr.exc_regions(region_list3, "Asia", "Siberia", region_note)   
     if not regions.empty:
-        print("political entity(missing region/sub-region):", regions['political_entity'].unique().tolist())
-        # print(regions[['genID', 'masterID', 'political_entity']])
-
+        # print("region:", regions['political_entity'].unique().tolist())
+        print(regions[['genID', 'masterID', 'political_entity', 'region', 'sub-region', 'region_notes']])
+        
     # edit publications
     publications = aadr.merge_doi(missing_doi_filepath)
     if not publications.empty:
