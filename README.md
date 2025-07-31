@@ -2,9 +2,11 @@
 
 This repository contains data and scripts that were used in the Allen Ancient DNA Resource (AADR) Metadata ETL Python Pipeline to generate the final CSV file imported into the AADR Visualizer (https://arcg.is/1CyL5n). 
 
-AADR Visualizer 
-v1.0 (Updated: 05-15-2025) - uses AADR v62.0
-v1.1 (Updated: 07-31-2025) - edited region/sub-region for eastern Russia, St. Martin's, and Guam
+AADR Visualizer
+ 
+- v1.0 (Updated: 05-15-2025) - uses AADR v62.0
+
+- v1.1 (Updated: 07-31-2025) - edited region/sub-region for eastern Russia, St. Martin's, and Guam
 
 ## Scripts 
 
